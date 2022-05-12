@@ -1,8 +1,12 @@
+
+
+
+
 export default function Banner() {
     return (
         <>
-            <div>
-                banner
+            <div className="banner">
+               <p>banner</p>
             </div>
         </>
     );
