@@ -10,17 +10,25 @@ import { useEffect, useState } from "react";
 
 export default function Potlukk() {
 
-    const[potlucks, setPotlucks] = useState([]);
+    const [potlucks, setPotlucks] = useState([]);
+    const [currPotluck, setCurrentPotluck] = useState({});
 
-    async function getAllPotlucks(){
-        const response = await fetch("http://www.localhost:5000/potlucks")
+    async function getAllPotlucks() {
+        const response = await fetch("http://www.localhost:5000/potlucks");
         const body = await response.json();
         setPotlucks(body);
+        setCurrentPotluck(body[0]);
     }
 
-    useEffect(()=>{
+    useEffect(() => {
+        // Refreshes the potlucks list every 10 minutes
+        // could change the timespan, or remove altogether
+        // removing all together could mean we might want a refresh
+        // everytime the user selects things
+        //setTimeout(getAllPotlucks, 600000);
         getAllPotlucks();
-    },[])
+
+    }, []);
 
 
 
@@ -36,10 +44,10 @@ export default function Potlukk() {
                     <SearchArea />
                 </div>
                 <div className="allPotlukks">
-                    <AllPotlukks potluckList={potlucks}/>
+                    <AllPotlukks onSelectPotluck={setCurrentPotluck} potluckList={potlucks} />
                 </div>
                 <div className="results">
-                    <Results potluckList={potlucks}/>
+                    <Results currPotluck={currPotluck} />
                 </div>
             </div>
         </>

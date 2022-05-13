@@ -4,21 +4,9 @@
 
 export default function Results(props) {
 
-   const potlucks = props.potluckList;
-
-   
-    const potluckRows = potlucks.map(p => <tr key={p.pid}>
-            <td>{p.pid}</td>
-            <td>{new Date(p.time).toDateString()}</td>
-            <td>{p.creatorid}</td>
-    </tr>)
-
-
-
-
-
-   
-
+    const potluck = props.currPotluck;
+    console.log(potluck);
+    const potluckItems = [];
     return (
         <>
             <table>
@@ -27,10 +15,19 @@ export default function Results(props) {
                 </thead>
 
                 <tbody>
-                    {potluckRows}
+                    <tr key={potluck.pid}>
+                        <td>{potluck.pid}</td>
+                        <td>{(new Date(potluck.time)).toDateString()}</td>
+                        <td>{potluck.creatorid}</td>
+                    </tr>
                 </tbody>
             </table>
-            
+            <div className="itemDisplay">
+                {
+                    // potluckItems will be set up here.
+                }
+            </div>
+
         </>
     );
 }
