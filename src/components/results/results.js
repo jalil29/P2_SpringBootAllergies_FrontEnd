@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 
 export default function Results(props) {
     const [guestName, setGuestName] = useState("");
+    const [newPotluckDate, setNewPotluckDate] = useState({});
 
     const currUser = props.currUser || [];
     const potluck = props.currPotluck || [];
     const potluckItems = props.potluckItems || [];
+    const setCurrPotluck = props.onSetPotluck;
 
     function saveGuestName(event) {
         setGuestName(event.target.value);
@@ -49,10 +51,45 @@ export default function Results(props) {
 
         if (currUser && potluck && currUser.userid === potluck.creatorid) {
 
-            return <><button onClick={() => { ownerClaimItem(item); }}>Claim</button> </>;
+            return <><span className="clickable" onClick={() => { ownerClaimItem(item); }}>Claim</span> </>;
         }
 
-        return <><input type="text" onInput={saveGuestName} /><button onClick={() => { guestClaimItem(item); }}>Claim</button></>;
+        return <><input type="text" onInput={saveGuestName} /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
+    }
+
+    async function createPotluck() {
+        if (!newPotluckDate) {
+            return;
+        }
+
+        const newPotluck = { "time": newPotluckDate.getTime(), "creatorid": currUser.userid };
+        const response = await fetch("http://localhost:5000/potlucks", {
+            method: "POST",
+            body: JSON.stringify(newPotluck),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        console.log(result);
+        if (result && result.pid) {
+            setCurrPotluck(result);
+            console.log(result);
+        }
+    }
+
+    function savePotluckTime(event) {
+        setNewPotluckDate(new Date(event.target.value));
+    }
+
+    async function deletePotluck() {
+        const response = await fetch(`http://localhost:5000/potlucks/${potluck.pid}`, {
+            method: "DELETE"
+        });
+
+        console.log(response);
+        console.log(await response.body());
     }
 
     function displayPotluckTable() {
@@ -91,18 +128,28 @@ export default function Results(props) {
                                 </tr>
                             )
                         }
+                        <tr>
+                            <td>{currUser.userid ? "ownerWanted" : "guestProvided"}</td>
+                            <td><input type="text" placeholder="new item description" /></td>
+                            <td>{currUser.userid ? currUser.username : <><input type="text" placeholder="your name" /></>}</td>
+                            <td><span className="clickable">Add Item</span></td>
+                        </tr>
                     </tbody>
                 </table>
             </>
         );
     }
 
+
+    console.log(new Date().toISOString().split("T")[0]);
     return (
         <>
             <span>
-                {currUser.username && <><button>Create Potluck</button></>}
-                {currUser.userid && currUser.userid === potluck.creatorid && <><button>Delete Potluck</button></>}
-                {potluck.pid && <><button>Add Item</button></>}
+                {currUser.username && <>
+                    <input name="potluckDate" type='date' onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} />
+                    <label className="clickable" htmlFor="potluckDate" onClick={createPotluck}>Create Potluck</label>
+                </>}
+                {currUser.userid && currUser.userid === potluck.creatorid && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}
             </span>
             {
                 potluck.pid ? displayPotluckTable() : <div>No potlucks to display!</div>

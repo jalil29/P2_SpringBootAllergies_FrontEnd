@@ -26,6 +26,11 @@ export default function Potlukk() {
         setPotluckItems(itemsList);
     }
 
+    function onCreatePotluck(potluck) {
+        setPotlucks([...potlucks, potluck]);
+        setCurrentPotluck(potluck);
+    }
+
     function onChangeUser(newUser) {
         console.log(`new user ${newUser || {}}`);
         setCurrUser(newUser);
@@ -51,7 +56,7 @@ export default function Potlukk() {
                     <AllPotlukks onSelectPotluck={setCurrentPotluck} potluckList={potlucks} />
                 </div>
                 <div className="results">
-                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} />
+                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} />
                 </div>
             </div>
         </>

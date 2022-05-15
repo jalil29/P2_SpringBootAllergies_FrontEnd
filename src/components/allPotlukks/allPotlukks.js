@@ -16,7 +16,7 @@ export default function AllPotlukks(props) {
         selectPotluck(potluck);
     }
 
-    const potluckRows = potlucks.map(p => <button onClick={() => setCurrentPotluck(p)} type="button" key={p.pid} className="potluckSelectors">{p.pid} {new Date(p.time).toDateString()}</button>);
+    const potluckRows = potlucks.map(p => <span onClick={() => setCurrentPotluck(p)} key={p.pid} className="potluckSelectors clickable">{p.pid} {new Date(p.time).toDateString()}</span>);
 
     return (
         <>
