@@ -36,6 +36,8 @@ export default function PotlukkItem(props) {
         if (isOwner()) {
 
             return <><span className="clickable" onClick={() => { ownerClaimItem(item); }}>Claim</span> </>;
+        } else if (currUser.username) {
+            return <><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
         }
 
         return <><input type="text" onInput={saveGuestName} value={guestName} placeholder="your name..." /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
@@ -50,7 +52,7 @@ export default function PotlukkItem(props) {
 
         const newItem = { ...item };
         newItem.status = "guestProvided";
-        newItem.supplier = guestName;
+        newItem.supplier = guestName || currUser.username;
         // update the item with the supplier name
         onClaimItem(newItem);
     }
