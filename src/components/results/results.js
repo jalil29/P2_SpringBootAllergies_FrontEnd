@@ -38,6 +38,7 @@ export default function Results(props) {
             setCurrPotluck(result);
             console.log(result);
             setNewPotluckDate("");
+            refreshPotluckItems(result);
         }
     }
 
