@@ -1,65 +1,25 @@
-import { useEffect, useState } from "react";
-
-const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+import { useState } from "react";
+import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
+import PotlukkItem from "../potlukkItem/potlukk-item";
 
 export default function Results(props) {
-    const [guestName, setGuestName] = useState("");
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+
     const [newPotluckDate, setNewPotluckDate] = useState({});
 
+    const potluckItems = props.potluckItems || [];
     const currUser = props.currUser || [];
     const potluck = props.currPotluck || [];
-    const potluckItems = props.potluckItems || [];
     const setCurrPotluck = props.onSetPotluck;
+    const refreshPotluckItems = props.onItemsUpdate;
 
-    function saveGuestName(event) {
-        setGuestName(event.target.value);
-    }
-
-    function guestClaimItem(item) {
-        if (!guestName) {
-            return;
-        }
-
-        item.status = "guestProvided";
-        item.supplier = guestName;
-        // update the item with the supplier name
-        onClaimItem(item);
-    }
-
-    function ownerClaimItem(item) {
-        if (!currUser.username) {
-            return;
-        }
-        item.status = "guestProvided";
-        item.supplier = currUser.username;
-        onClaimItem(item);
-    }
-
-    async function onClaimItem(item) {
-        const response = await fetch(`${baseURL}item`, {
-            method: "POST",
-            body: JSON.stringify(item),
-            header: {
-                'Content-Type': 'application/json'
-            }
-        });
-    }
-
-    function itemClaimField(item) {
-        if (item.supplier) {
-            return "";
-        }
-
-        if (currUser && potluck && currUser.userid === potluck.creatorid) {
-
-            return <><span className="clickable" onClick={() => { ownerClaimItem(item); }}>Claim</span> </>;
-        }
-
-        return <><input type="text" onInput={saveGuestName} /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
+    function isOwner() {
+        return currUser.userid === potluck.creatorid;
     }
 
     async function createPotluck() {
         if (!newPotluckDate) {
+            alert('Need to provide a date to create a potluck');
             return;
         }
 
@@ -89,8 +49,10 @@ export default function Results(props) {
             method: "DELETE"
         });
 
-        console.log(response);
-        console.log(await response.body());
+        const status = await response.status();
+        if (status === 204) {
+            console.log(status);
+        }
     }
 
     function displayPotluckTable() {
@@ -115,42 +77,28 @@ export default function Results(props) {
                             <th>Item Status</th>
                             <th>Item Description</th>
                             <th>Supplier</th>
-                            <th>Claim Item</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            potluckItems.map(i =>
-                                <tr key={i.itemId}>
-                                    <td>{i.status}</td>
-                                    <td>{i.description}</td>
-                                    <td>{i.supplier ? i.supplier : "None"}</td>
-                                    <td>{itemClaimField(i)}</td>
-                                </tr>
-                            )
+                            potluckItems.map(i => <PotlukkItem key={i.itemId} currPotluck={potluck} item={i} isOwner={isOwner} onRefreshItems={refreshPotluckItems} />)
                         }
-                        <tr>
-                            <td>{currUser.userid ? "ownerWanted" : "guestProvided"}</td>
-                            <td><input type="text" placeholder="new item description" /></td>
-                            <td>{currUser.userid ? currUser.username : <><input type="text" placeholder="your name" /></>}</td>
-                            <td><span className="clickable">Add Item</span></td>
-                        </tr>
+                        <NewPotlukkItem isOwner={isOwner} currUser={currUser} currPotluck={potluck} refreshPotluckItems={refreshPotluckItems} />
                     </tbody>
                 </table>
             </>
         );
     }
 
-
-    console.log(new Date().toISOString().split("T")[0]);
     return (
         <>
             <span>
-                {currUser.username && <>
+                {isOwner() && <>
                     <input name="potluckDate" type='date' onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} />
                     <label className="clickable" htmlFor="potluckDate" onClick={createPotluck}>Create Potluck</label>
                 </>}
-                {currUser.userid && currUser.userid === potluck.creatorid && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}
+                {isOwner() && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}
             </span>
             {
                 potluck.pid ? displayPotluckTable() : <div>No potlucks to display!</div>
