@@ -22,6 +22,10 @@ export default function Potlukk() {
         getAllPItems(body[0]);
     }
 
+    function savePotlucks(potlucks) {
+        setPotlucks(potlucks);
+    }
+
     async function getAllPItems(potluck) {
         const response = await fetch(`${baseURL}items/${potluck.pid}`);
         const itemsList = await response.json();
@@ -58,7 +62,7 @@ export default function Potlukk() {
                     </div>
                 </div>
                 <div className="searchArea">
-                    <SearchArea currUser={currUser} currPotluck={currPotluck} />
+                    <SearchArea currUser={currUser} currPotluck={currPotluck} setPotluck={{savePotlucks}} />
                 </div>
                 <div className="allPotlukks">
                     <AllPotlukks onSelectPotluck={onSelectPotluck} potluckList={potlucks} />
