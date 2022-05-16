@@ -10,7 +10,7 @@ export default function PotlukkItem(props) {
     const refreshPotluckItems = props.onRefreshItems;
     const currPotluck = props.currPotluck;
     console.log(currPotluck);
-    const currUser = props.currUser;
+    const currUser = props.currUser || {};
 
 
     async function onDeleteItem(item) {
@@ -54,6 +54,7 @@ export default function PotlukkItem(props) {
     }
 
     function ownerClaimItem(item) {
+        console.log(currUser);
         if (!currUser.username) {
             return;
         }
