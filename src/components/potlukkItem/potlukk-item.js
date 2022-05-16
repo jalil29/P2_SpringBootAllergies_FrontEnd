@@ -9,7 +9,7 @@ export default function PotlukkItem(props) {
     const isOwner = props.isOwner;
     const refreshPotluckItems = props.onRefreshItems;
     const currPotluck = props.currPotluck;
-    console.log(currPotluck);
+    console.log(props.currUser);
     const currUser = props.currUser || {};
 
 
@@ -19,7 +19,7 @@ export default function PotlukkItem(props) {
             method: "DELETE"
         });
         const status = await response.status;
-        if (status === 200) {
+        if (status === 204) {
             refreshPotluckItems(currPotluck);
         }
     }
@@ -36,6 +36,8 @@ export default function PotlukkItem(props) {
         if (isOwner()) {
 
             return <><span className="clickable" onClick={() => { ownerClaimItem(item); }}>Claim</span> </>;
+        } else if (currUser.username) {
+            return <><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
         }
 
         return <><input type="text" onInput={saveGuestName} value={guestName} placeholder="your name..." /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
@@ -50,7 +52,7 @@ export default function PotlukkItem(props) {
 
         const newItem = { ...item };
         newItem.status = "guestProvided";
-        newItem.supplier = guestName;
+        newItem.supplier = guestName || currUser.username;
         // update the item with the supplier name
         onClaimItem(newItem);
     }
@@ -58,6 +60,7 @@ export default function PotlukkItem(props) {
     function ownerClaimItem(item) {
         console.log(currUser);
         if (!currUser.username) {
+            alert('You need to sign in as owner to claim this item');
             return;
         }
         const newItem = { ...item };

@@ -22,7 +22,7 @@ export default function Banner(props = {}) {
 
     async function attemptLogin() {
         if (!username || !password) {
-
+            alert('Need to give a username and password to login');
             return;
         }
 
@@ -44,6 +44,7 @@ export default function Banner(props = {}) {
 
     async function attemptSignUp() {
         if (!username || !password) {
+            alert('Need to give a username and password to sign up');
             return;
         }
         const newUser = JSON.stringify({ username, password });
