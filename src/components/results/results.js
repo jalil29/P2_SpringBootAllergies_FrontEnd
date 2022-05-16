@@ -37,6 +37,7 @@ export default function Results(props) {
         if (result && result.pid) {
             setCurrPotluck(result);
             console.log(result);
+            setNewPotluckDate("");
         }
     }
 

@@ -35,6 +35,7 @@ export default function Potlukk() {
     function onCreatePotluck(potluck) {
         setPotlucks([...potlucks, potluck]);
         setCurrentPotluck(potluck);
+        console.log(potluck);
     }
 
     function onSelectPotluck(potluck) {
@@ -50,6 +51,8 @@ export default function Potlukk() {
 
     useEffect(() => {
         getAllPotlucks();
+        const currentUser = sessionStorage.getItem("user") || [];
+        setCurrUser(currentUser);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
