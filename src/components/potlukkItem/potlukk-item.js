@@ -9,7 +9,7 @@ export default function PotlukkItem(props) {
     const isOwner = props.isOwner;
     const refreshPotluckItems = props.onRefreshItems;
     const currPotluck = props.currPotluck;
-    console.log(currPotluck);
+    console.log(currUser);
     const currUser = props.currUser || {};
 
 
@@ -19,7 +19,7 @@ export default function PotlukkItem(props) {
             method: "DELETE"
         });
         const status = await response.status;
-        if (status === 200) {
+        if (status === 204) {
             refreshPotluckItems(currPotluck);
         }
     }
@@ -58,6 +58,7 @@ export default function PotlukkItem(props) {
     function ownerClaimItem(item) {
         console.log(currUser);
         if (!currUser.username) {
+            alert('You need to sign in as owner to claim this item');
             return;
         }
         const newItem = { ...item };
