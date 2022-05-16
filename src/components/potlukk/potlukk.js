@@ -46,16 +46,19 @@ export default function Potlukk() {
     function onChangeUser(newUser) {
         console.log(`new user ${newUser || {}}`);
         setCurrUser(newUser);
-        sessionStorage.setItem("user", JSON.stringify(newUser || "{}"));
+        localStorage.setItem("user", JSON.stringify(newUser || "{}"));
     }
 
     useEffect(() => {
         getAllPotlucks();
         console.log('finding current user');
-        const currentUser = sessionStorage.getItem("user") || {};
+        const currentUser = localStorage.getItem("user") || {};
         console.log(currentUser);
         if (currentUser && currentUser.username) {
             setCurrUser(currentUser);
+        } else {
+            console.log('current user was null?');
+            setCurrUser({});
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
