@@ -1,9 +1,4 @@
 export default function SearchArea(props = {}) {
-    const user = props.currUser || {};
-    const potluck = props.currPotluck || {};
-
-
-
     return (
         <>
             <div className="searchItems">

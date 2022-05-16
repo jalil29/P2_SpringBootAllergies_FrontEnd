@@ -1,9 +1,16 @@
-const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+import { useState } from "react";
+
 
 export default function PotlukkItem(props) {
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+
+    const [guestName, saveGuestName] = useState("");
     const item = props.item;
     const isOwner = props.isOwner;
     const refreshPotluckItems = props.onRefreshItems;
+    const currPotluck = props.currPotluck;
+    console.log(currPotluck);
+    const currUser = props.currUser;
 
 
     async function onDeleteItem(item) {
@@ -13,7 +20,7 @@ export default function PotlukkItem(props) {
         });
         const status = await response.status;
         if (status === 200) {
-            refreshPotluckItems(potluck);
+            refreshPotluckItems(currPotluck);
         }
     }
 
@@ -62,7 +69,7 @@ export default function PotlukkItem(props) {
         });
         const returned = await response.json();
         if (returned.itemId && returned.supplier) {
-            refreshPotluckItems(potluck);
+            refreshPotluckItems(currPotluck);
         }
     }
 
@@ -75,7 +82,7 @@ export default function PotlukkItem(props) {
                 <td>
                     {itemClaimField(item)}
                     {
-                        isOwner() && <><span className="clickable" onClick={() => onDeleteItem(i)}>Delete</span></>
+                        isOwner() && <><span className="clickable" onClick={() => onDeleteItem(item)}>Delete</span></>
                     }
                 </td>
             </tr>

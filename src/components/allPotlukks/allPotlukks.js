@@ -1,9 +1,4 @@
-import { useEffect } from "react";
-
-
 import './allPotlukks.css';
-
-
 
 export default function AllPotlukks(props) {
 

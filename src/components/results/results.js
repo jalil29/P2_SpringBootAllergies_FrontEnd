@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
 import PotlukkItem from "../potlukkItem/potlukk-item";
 
-const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
-
 export default function Results(props) {
-    const [guestName, setGuestName] = useState("");
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+
     const [newPotluckDate, setNewPotluckDate] = useState({});
-    const [newItemDescription, setNewItemDescription] = useState("");
 
     const potluckItems = props.potluckItems || [];
     const currUser = props.currUser || [];
@@ -18,12 +17,9 @@ export default function Results(props) {
         return currUser.userid === potluck.creatorid;
     }
 
-    function saveGuestName(event) {
-        setGuestName(event.target.value);
-    }
-
     async function createPotluck() {
         if (!newPotluckDate) {
+            alert('Need to provide a date to create a potluck');
             return;
         }
 
@@ -53,42 +49,11 @@ export default function Results(props) {
             method: "DELETE"
         });
 
-        console.log(response);
-        console.log(await response.body());
-    }
-
-    function saveNewItemDescription(event) {
-        setNewItemDescription(event.target.value);
-    }
-
-    async function onAddNewItem() {
-        const newItem = { "status": "", "description": newItemDescription, "pid": potluck.pid, "supplier": null };
-        console.log("Test");
-        if (!currUser.userid && !guestName && !isOwner()) {
-            return;
-        } else if (isOwner()) {
-            newItem.status = "ownerWanted";
-        } else {
-            newItem.supplier = guestName || currUser.username;
-            newItem.status = "guestProvided";
-        }
-
-        const response = await fetch(`${baseURL}items`, {
-            method: "POST",
-            body: JSON.stringify(newItem),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const result = await response.json();
-        if (result.itemId) {
-            refreshPotluckItems(potluck);
-            setNewItemDescription("");
-            setGuestName("");
+        const status = await response.status();
+        if (status === 204) {
+            console.log(status);
         }
     }
-
-
 
     function displayPotluckTable() {
         return (
@@ -117,14 +82,9 @@ export default function Results(props) {
                     </thead>
                     <tbody>
                         {
-                            potluckItems.map(i => <PotlukkItem item={i} isOwner={isOwner} onRefreshItems={refreshPotluckItems} />)
+                            potluckItems.map(i => <PotlukkItem key={i.itemId} currPotluck={potluck} item={i} isOwner={isOwner} onRefreshItems={refreshPotluckItems} />)
                         }
-                        <tr>
-                            <td>{isOwner() ? "ownerWanted" : "guestProvided"}</td>
-                            <td><input type="text" placeholder="new item description" onInput={saveNewItemDescription} value={newItemDescription} /></td>
-                            <td><input disabled={currUser.username} type="text" placeholder={currUser.username ? 'none' : "your name..."} onChange={saveGuestName} value={guestName} /></td>
-                            <td><span className="clickable" onClick={onAddNewItem}>Add Item</span></td>
-                        </tr>
+                        <NewPotlukkItem isOwner={isOwner} currUser={currUser} currPotluck={potluck} refreshPotluckItems={refreshPotluckItems} />
                     </tbody>
                 </table>
             </>
