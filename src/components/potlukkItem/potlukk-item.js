@@ -9,7 +9,7 @@ export default function PotlukkItem(props) {
     const isOwner = props.isOwner;
     const refreshPotluckItems = props.onRefreshItems;
     const currPotluck = props.currPotluck;
-    console.log(currUser);
+    console.log(props.currUser);
     const currUser = props.currUser || {};
 
 
