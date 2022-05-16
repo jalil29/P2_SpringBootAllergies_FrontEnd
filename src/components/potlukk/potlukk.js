@@ -51,7 +51,9 @@ export default function Potlukk() {
 
     useEffect(() => {
         getAllPotlucks();
-        const currentUser = sessionStorage.getItem("user") || [];
+        console.log('finding current user');
+        const currentUser = sessionStorage.getItem("user") || {};
+        console.log(currentUser);
         setCurrUser(currentUser);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

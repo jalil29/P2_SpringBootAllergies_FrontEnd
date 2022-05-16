@@ -42,7 +42,9 @@ export default function PotlukkItem(props) {
     }
 
     function guestClaimItem(item) {
-        if (!guestName) {
+        console.log(currUser);
+        if (!guestName && !currUser.username) {
+            alert('You need to submit a username or sign in');
             return;
         }
 
