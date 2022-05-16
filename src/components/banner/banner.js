@@ -71,9 +71,9 @@ export default function Banner(props = {}) {
         return <>
             <div className="login">
                 <label htmlFor="username">Username</label>
-                <input type="text" name="username" onInput={onUsernameChange} />
+                <input type="text" name="username"  minLength={8} maxLength={50} pattern="^[a-zA-Z0-9_-]*$" onInput={onUsernameChange} />
                 <label htmlFor="password">Password</label>
-                <input type="password" name="password" onInput={onPasswordChange} />
+                <input type="password" name="password"  minLength={8}  maxLength={50} pattern="^[a-zA-Z0-9_-]*$" onInput={onPasswordChange} />
 
                 <div className="clickable" onClick={attemptLogin}>Login</div> or
                 <div className="clickable" onClick={attemptSignUp}>Sign up</div>
