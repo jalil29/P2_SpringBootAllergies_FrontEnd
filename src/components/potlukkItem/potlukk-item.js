@@ -4,7 +4,7 @@ import { useState } from "react";
 export default function PotlukkItem(props) {
     const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
-    const [guestName, saveGuestName] = useState("");
+    const [guestName, setGuestName] = useState("");
     const item = props.item;
     const isOwner = props.isOwner;
     const refreshPotluckItems = props.onRefreshItems;
@@ -22,6 +22,10 @@ export default function PotlukkItem(props) {
         if (status === 200) {
             refreshPotluckItems(currPotluck);
         }
+    }
+
+    function saveGuestName(event) {
+        setGuestName(event.target.value);
     }
 
     function itemClaimField(item) {

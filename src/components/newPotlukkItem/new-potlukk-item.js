@@ -17,6 +17,7 @@ export default function NewPotlukkItem(props) {
     }
 
     function saveGuestName(event) {
+        console.log(event);
         setGuestName(event.target.value);
     }
 
@@ -52,7 +53,7 @@ export default function NewPotlukkItem(props) {
             <tr>
                 <td>{isOwner() ? "ownerWanted" : "guestProvided"}</td>
                 <td><input type="text" placeholder="new item description" onInput={saveItemDescription} value={itemDescription} /></td>
-                <td><input disabled={currUser.username} type="text" placeholder={currUser.username ? 'none' : "your name..."} onChange={saveGuestName} /></td>
+                <td><input disabled={currUser.username} type="text" placeholder={currUser.username ? 'none' : "your name..."} onInput={saveGuestName} /></td>
                 <td><span className="clickable" onClick={onAddNewItem}>Add Item</span></td>
             </tr>
         </>
