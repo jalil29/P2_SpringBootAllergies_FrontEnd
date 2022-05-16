@@ -2,7 +2,8 @@ import {useState} from "react";
 
 export default function SearchArea(props = {}) {
     const baseurl="http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/"
-    const [potlucks,setPotlucks] = useState([]);
+
+    const setPotluck = props.setPotluck;
     const [creatorid, setCreatorID] = useState("");
     const [pid, setPID] = useState("")
 
@@ -16,17 +17,17 @@ export default function SearchArea(props = {}) {
 
     async function getPotlukksByCreator(){
         console.log(creatorid)
-        const response = await fetch(`${baseurl}potlucks/${potlucks.creatorid}`);
+        const response = await fetch(`${baseurl}potlucks?creatorid=${creatorid}`);
         const body = await response.json();
-        setPotlucks(body);
+        setPotluck(body);
     }
 
 
     async function getPotlukksByPID(){
         console.log(pid)
-        const response = await fetch(`${baseurl}potlucks/${potlucks.pid}`);
+        const response = await fetch(`${baseurl}potlucks?pid=${pid}`);
         const body = await response.json();
-        setPotlucks(body);
+        setPotluck(body);
         console.log(body)
     }
 
