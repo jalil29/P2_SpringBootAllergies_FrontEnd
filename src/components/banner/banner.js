@@ -4,8 +4,9 @@ import './banner.css';
 
 
 export default function Banner(props = {}) {
-    const [username, setUsername] = useState({});
-    const [password, setPassword] = useState({});
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+
 
     const user = props.currUser;
     const onChangeUser = props.onChangeUser;
@@ -20,8 +21,10 @@ export default function Banner(props = {}) {
 
     async function attemptLogin() {
         if (!username || !password) {
+
             return;
         }
+
         const loginUser = JSON.stringify({ username, password });
         const response = await fetch("http://localhost:5000/login", {
             body: loginUser,

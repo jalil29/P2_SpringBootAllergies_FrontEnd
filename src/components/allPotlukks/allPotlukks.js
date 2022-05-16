@@ -11,8 +11,6 @@ export default function AllPotlukks(props) {
     const selectPotluck = props.onSelectPotluck;
 
     function setCurrentPotluck(potluck) {
-        console.log("Potluck:");
-        console.log(potluck);
         selectPotluck(potluck);
     }
 

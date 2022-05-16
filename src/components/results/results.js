@@ -4,11 +4,17 @@ import { useEffect, useState } from "react";
 export default function Results(props) {
     const [guestName, setGuestName] = useState("");
     const [newPotluckDate, setNewPotluckDate] = useState({});
+    const [newItemDescription, setNewItemDescription] = useState("");
 
+    const potluckItems = props.potluckItems || [];
     const currUser = props.currUser || [];
     const potluck = props.currPotluck || [];
-    const potluckItems = props.potluckItems || [];
     const setCurrPotluck = props.onSetPotluck;
+    const refreshPotluckItems = props.onItemsUpdate;
+
+    function isOwner() {
+        return currUser.userid === potluck.creatorid;
+    }
 
     function saveGuestName(event) {
         setGuestName(event.target.value);
@@ -19,29 +25,36 @@ export default function Results(props) {
             return;
         }
 
-        item.status = "guestProvided";
-        item.supplier = guestName;
+        const newItem = { ...item };
+        newItem.status = "guestProvided";
+        newItem.supplier = guestName;
         // update the item with the supplier name
-        onClaimItem(item);
+        onClaimItem(newItem);
     }
 
     function ownerClaimItem(item) {
         if (!currUser.username) {
             return;
         }
-        item.status = "guestProvided";
-        item.supplier = currUser.username;
-        onClaimItem(item);
+        const newItem = { ...item };
+        newItem.status = "guestProvided";
+        newItem.supplier = currUser.username;
+        onClaimItem(newItem);
     }
 
     async function onClaimItem(item) {
-        const response = await fetch("http://localhost:5000/item", {
+        console.log(item);
+        const response = await fetch("http://localhost:5000/items", {
             method: "POST",
             body: JSON.stringify(item),
-            header: {
+            headers: {
                 'Content-Type': 'application/json'
             }
         });
+        const returned = await response.json();
+        if (returned.itemId && returned.supplier) {
+            refreshPotluckItems(potluck);
+        }
     }
 
     function itemClaimField(item) {
@@ -54,7 +67,7 @@ export default function Results(props) {
             return <><span className="clickable" onClick={() => { ownerClaimItem(item); }}>Claim</span> </>;
         }
 
-        return <><input type="text" onInput={saveGuestName} /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
+        return <><input type="text" onInput={saveGuestName} value={guestName} placeholder="your name..." /><span className="clickable" onClick={() => { guestClaimItem(item); }}>Claim</span></>;
     }
 
     async function createPotluck() {
@@ -92,6 +105,44 @@ export default function Results(props) {
         console.log(await response.body());
     }
 
+    function saveNewItemDescription(event) {
+        setNewItemDescription(event.target.value);
+    }
+
+    async function onAddNewItem() {
+        const newItem = { "status": "", "description": newItemDescription, "pid": potluck.pid, "supplier": null };
+        console.log("Test");
+        if (!currUser.userid && !guestName && !isOwner()) {
+            return;
+        } else if (isOwner()) {
+            newItem.status = "ownerWanted";
+        } else {
+            newItem.supplier = guestName || currUser.username;
+            newItem.status = "guestProvided";
+        }
+
+        const response = await fetch("http://localhost:5000/items", {
+            method: "POST",
+            body: JSON.stringify(newItem),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const result = await response.json();
+        if (result.itemId) {
+            refreshPotluckItems(potluck);
+            setNewItemDescription("");
+            setGuestName("");
+        }
+    }
+
+    async function onDeleteItem(item) {
+        console.log(item);
+        const response = await fetch(`http://localhost:5000/items/${item.itemId}`, {
+            method: "DELETE"
+        });
+    }
+
     function displayPotluckTable() {
         return (
             <>
@@ -114,7 +165,7 @@ export default function Results(props) {
                             <th>Item Status</th>
                             <th>Item Description</th>
                             <th>Supplier</th>
-                            <th>Claim Item</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -124,15 +175,20 @@ export default function Results(props) {
                                     <td>{i.status}</td>
                                     <td>{i.description}</td>
                                     <td>{i.supplier ? i.supplier : "None"}</td>
-                                    <td>{itemClaimField(i)}</td>
+                                    <td>
+                                        {itemClaimField(i)}
+                                        {
+                                            isOwner() && <><span className="clickable" onClick={() => onDeleteItem(i)}>Delete</span></>
+                                        }
+                                    </td>
                                 </tr>
                             )
                         }
                         <tr>
-                            <td>{currUser.userid ? "ownerWanted" : "guestProvided"}</td>
-                            <td><input type="text" placeholder="new item description" /></td>
-                            <td>{currUser.userid ? currUser.username : <><input type="text" placeholder="your name" /></>}</td>
-                            <td><span className="clickable">Add Item</span></td>
+                            <td>{isOwner() ? "ownerWanted" : "guestProvided"}</td>
+                            <td><input type="text" placeholder="new item description" onInput={saveNewItemDescription} value={newItemDescription} /></td>
+                            <td><input disabled={currUser.username} type="text" placeholder={currUser.username ? 'none' : "your name..."} onChange={saveGuestName} value={guestName} /></td>
+                            <td><span className="clickable" onClick={onAddNewItem}>Add Item</span></td>
                         </tr>
                     </tbody>
                 </table>
@@ -140,16 +196,14 @@ export default function Results(props) {
         );
     }
 
-
-    console.log(new Date().toISOString().split("T")[0]);
     return (
         <>
             <span>
-                {currUser.username && <>
+                {isOwner() && <>
                     <input name="potluckDate" type='date' onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} />
                     <label className="clickable" htmlFor="potluckDate" onClick={createPotluck}>Create Potluck</label>
                 </>}
-                {currUser.userid && currUser.userid === potluck.creatorid && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}
+                {isOwner() && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}
             </span>
             {
                 potluck.pid ? displayPotluckTable() : <div>No potlucks to display!</div>
