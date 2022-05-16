@@ -41,6 +41,7 @@ export default function Results(props) {
     }
 
     function savePotluckTime(event) {
+        console.log(event.target.value);
         setNewPotluckDate(new Date(event.target.value));
     }
 
@@ -49,7 +50,7 @@ export default function Results(props) {
             method: "DELETE"
         });
 
-        const status = await response.status();
+        const status = await response.status;
         if (status === 204) {
             console.log(status);
         }
