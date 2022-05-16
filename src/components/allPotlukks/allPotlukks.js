@@ -1,9 +1,4 @@
-import { useEffect } from "react";
-
-
 import './allPotlukks.css';
-
-
 
 export default function AllPotlukks(props) {
 
@@ -11,8 +6,6 @@ export default function AllPotlukks(props) {
     const selectPotluck = props.onSelectPotluck;
 
     function setCurrentPotluck(potluck) {
-        console.log("Potluck:");
-        console.log(potluck);
         selectPotluck(potluck);
     }
 

@@ -5,8 +5,10 @@ import Results from '../results/results';
 import './potlukk.css';
 import { useEffect, useState } from "react";
 
+
 export default function Potlukk() {
     const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+
     const [potlucks, setPotlucks] = useState([]);
     const [currPotluck, setCurrentPotluck] = useState({});
     const [potluckItems, setPotluckItems] = useState([]);
@@ -31,6 +33,11 @@ export default function Potlukk() {
         setCurrentPotluck(potluck);
     }
 
+    function onSelectPotluck(potluck) {
+        setCurrentPotluck(potluck);
+        getAllPotluckItems(potluck);
+    }
+
     function onChangeUser(newUser) {
         console.log(`new user ${newUser || {}}`);
         setCurrUser(newUser);
@@ -39,6 +46,7 @@ export default function Potlukk() {
 
     useEffect(() => {
         getAllPotlucks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (
@@ -53,10 +61,10 @@ export default function Potlukk() {
                     <SearchArea currUser={currUser} currPotluck={currPotluck} />
                 </div>
                 <div className="allPotlukks">
-                    <AllPotlukks onSelectPotluck={setCurrentPotluck} potluckList={potlucks} />
+                    <AllPotlukks onSelectPotluck={onSelectPotluck} potluckList={potlucks} />
                 </div>
                 <div className="results">
-                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} />
+                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} onItemsUpdate={getAllPotluckItems} />
                 </div>
             </div>
         </>
