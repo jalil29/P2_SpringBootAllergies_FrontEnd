@@ -121,7 +121,7 @@ export default function Results(props) {
             newItem.status = "guestProvided";
         }
 
-        const response = await fetch("http://localhost:5000/items", {
+        const response = await fetch(`${baseURL}items`, {
             method: "POST",
             body: JSON.stringify(newItem),
             headers: {
@@ -138,7 +138,7 @@ export default function Results(props) {
 
     async function onDeleteItem(item) {
         console.log(item);
-        const response = await fetch(`http://localhost:5000/items/${item.itemId}`, {
+        const response = await fetch(`${baseURL}items/${item.itemId}`, {
             method: "DELETE"
         });
     }
