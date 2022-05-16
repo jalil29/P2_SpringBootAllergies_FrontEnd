@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
 export default function Results(props) {
     const [guestName, setGuestName] = useState("");
@@ -35,7 +36,7 @@ export default function Results(props) {
     }
 
     async function onClaimItem(item) {
-        const response = await fetch("http://localhost:5000/item", {
+        const response = await fetch(`${baseURL}item`, {
             method: "POST",
             body: JSON.stringify(item),
             header: {
@@ -63,7 +64,7 @@ export default function Results(props) {
         }
 
         const newPotluck = { "time": newPotluckDate.getTime(), "creatorid": currUser.userid };
-        const response = await fetch("http://localhost:5000/potlucks", {
+        const response = await fetch(`${baseURL}potlucks`, {
             method: "POST",
             body: JSON.stringify(newPotluck),
             headers: {
@@ -84,7 +85,7 @@ export default function Results(props) {
     }
 
     async function deletePotluck() {
-        const response = await fetch(`http://localhost:5000/potlucks/${potluck.pid}`, {
+        const response = await fetch(`${baseURL}potlucks/${potluck.pid}`, {
             method: "DELETE"
         });
 

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import './banner.css';
 
-
+const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 export default function Banner(props = {}) {
     const [username, setUsername] = useState({});
     const [password, setPassword] = useState({});
@@ -23,7 +23,7 @@ export default function Banner(props = {}) {
             return;
         }
         const loginUser = JSON.stringify({ username, password });
-        const response = await fetch("http://localhost:5000/login", {
+        const response = await fetch(`${baseURL}login`, {
             body: loginUser,
             method: "POST",
             headers: {
@@ -43,7 +43,7 @@ export default function Banner(props = {}) {
             return;
         }
         const newUser = JSON.stringify({ username, password });
-        const response = await fetch('http://localhost:5000/users', {
+        const response = await fetch(`${baseURL}users`, {
             body: newUser,
             method: "POST",
             headers: {

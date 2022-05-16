@@ -5,15 +5,16 @@ import Results from '../results/results';
 import './potlukk.css';
 import { useEffect, useState } from "react";
 
-export default function Potlukk() {
+const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
+export default function Potlukk() {
     const [potlucks, setPotlucks] = useState([]);
     const [currPotluck, setCurrentPotluck] = useState({});
     const [potluckItems, setPotluckItems] = useState([]);
     const [currUser, setCurrUser] = useState({});
 
     async function getAllPotlucks() {
-        const response = await fetch("http://www.localhost:5000/potlucks");
+        const response = await fetch(`${baseURL}potlucks`);
         const body = await response.json();
         setPotlucks(body);
         setCurrentPotluck(body[0]);
@@ -21,7 +22,7 @@ export default function Potlukk() {
     }
 
     async function getAllPotluckItems(potluck) {
-        const response = await fetch(`http://www.localhost:5000/items/${potluck.pid}`);
+        const response = await fetch(`${baseURL}items/${potluck.pid}`);
         const itemsList = await response.json();
         setPotluckItems(itemsList);
     }
