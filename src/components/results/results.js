@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 
-const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
-
 export default function Results(props) {
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
     const [guestName, setGuestName] = useState("");
     const [newPotluckDate, setNewPotluckDate] = useState({});
 

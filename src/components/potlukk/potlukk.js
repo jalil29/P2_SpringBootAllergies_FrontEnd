@@ -5,9 +5,8 @@ import Results from '../results/results';
 import './potlukk.css';
 import { useEffect, useState } from "react";
 
-const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
-
 export default function Potlukk() {
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
     const [potlucks, setPotlucks] = useState([]);
     const [currPotluck, setCurrentPotluck] = useState({});
     const [potluckItems, setPotluckItems] = useState([]);
