@@ -1,9 +1,0 @@
-.potluckChoices {
-    display: flex;
-    flex-direction: column;
-}
-
-.potluckSelectors {
-    max-width: 15em;
-    justify-self: flex-start;
-}
