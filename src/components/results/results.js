@@ -94,7 +94,7 @@ export default function Results(props) {
     return (
         <>
             <span>
-                {isOwner() && <>
+                {currUser.userid && <>
                     <input name="potluckDate" type='date' onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} />
                     <label className="clickable" htmlFor="potluckDate" onClick={createPotluck}>Create Potluck</label>
                 </>}

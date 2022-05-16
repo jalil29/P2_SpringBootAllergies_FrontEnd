@@ -62,7 +62,7 @@ export default function Potlukk() {
                     </div>
                 </div>
                 <div className="searchArea">
-                    <SearchArea currUser={currUser} currPotluck={currPotluck} setPotluck={{savePotlucks}} />
+                    <SearchArea currUser={currUser} currPotluck={currPotluck} setPotluck={savePotlucks} />
                 </div>
                 <div className="allPotlukks">
                     <AllPotlukks onSelectPotluck={onSelectPotluck} potluckList={potlucks} />
