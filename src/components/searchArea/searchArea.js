@@ -16,7 +16,7 @@ export default function SearchArea(props = {}) {
 
     async function getPotlukksByCreator(){
         console.log(creatorid)
-        const response = await fetch(`${baseurl}potlucks/${potlucks.creatorid}`);
+        const response = await fetch(`${baseurl}potlucks?creatorid=${creatorid}`);
         const body = await response.json();
         setPotlucks(body);
     }
@@ -24,7 +24,7 @@ export default function SearchArea(props = {}) {
 
     async function getPotlukksByPID(){
         console.log(pid)
-        const response = await fetch(`${baseurl}potlucks/${potlucks.pid}`);
+        const response = await fetch(`${baseurl}potlucks?pid=${pid}`);
         const body = await response.json();
         setPotlucks(body);
         console.log(body)
