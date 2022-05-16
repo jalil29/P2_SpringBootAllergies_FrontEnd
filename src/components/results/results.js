@@ -23,6 +23,7 @@ export default function Results(props) {
 
     function guestClaimItem(item) {
         if (!guestName) {
+            alert('Need to provide a guest name.');
             return;
         }
 
@@ -35,6 +36,7 @@ export default function Results(props) {
 
     function ownerClaimItem(item) {
         if (!currUser.username) {
+            alert('You need to be logged in to claim an item as owner.');
             return;
         }
         const newItem = { ...item };
@@ -72,6 +74,7 @@ export default function Results(props) {
 
     async function createPotluck() {
         if (!newPotluckDate) {
+            alert('Need to provide a date to create a potluck');
             return;
         }
 
@@ -113,6 +116,7 @@ export default function Results(props) {
         const newItem = { "status": "", "description": newItemDescription, "pid": potluck.pid, "supplier": null };
         console.log("Test");
         if (!currUser.userid && !guestName && !isOwner()) {
+            alert('Need to login or provide a guest name to add an item.');
             return;
         } else if (isOwner()) {
             newItem.status = "ownerWanted";
