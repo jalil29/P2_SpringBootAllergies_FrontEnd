@@ -19,10 +19,10 @@ export default function Potlukk() {
         const body = await response.json();
         setPotlucks(body);
         setCurrentPotluck(body[0]);
-        getAllPotluckItems(body[0]);
+        getAllPItems(body[0]);
     }
 
-    async function getAllPotluckItems(potluck) {
+    async function getAllPItems(potluck) {
         const response = await fetch(`${baseURL}items/${potluck.pid}`);
         const itemsList = await response.json();
         setPotluckItems(itemsList);
@@ -35,7 +35,7 @@ export default function Potlukk() {
 
     function onSelectPotluck(potluck) {
         setCurrentPotluck(potluck);
-        getAllPotluckItems(potluck);
+        getAllPItems(potluck);
     }
 
     function onChangeUser(newUser) {
@@ -64,7 +64,7 @@ export default function Potlukk() {
                     <AllPotlukks onSelectPotluck={onSelectPotluck} potluckList={potlucks} />
                 </div>
                 <div className="results">
-                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} onItemsUpdate={getAllPotluckItems} />
+                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} onItemsUpdate={getAllPItems} />
                 </div>
             </div>
         </>
