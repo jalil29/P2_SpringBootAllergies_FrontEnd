@@ -1,11 +1,45 @@
+import {useState} from "react";
+
 export default function SearchArea(props = {}) {
+    const baseurl="http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/"
+    const [potlucks,setPotlucks] = useState([]);
+    const [creatorid, setCreatorID] = useState("");
+    const [pid, setPID] = useState("")
+
+    function savedPId(event){
+         setPID(event.target.value);
+    }
+
+    function savedCreatorId(event){
+        setCreatorID(event.target.value);
+    }
+
+    async function getPotlukksByCreator(){
+        console.log(creatorid)
+        const response = await fetch(`${baseurl}potlucks/${potlucks.creatorid}`);
+        const body = await response.json();
+        setPotlucks(body);
+    }
+
+
+    async function getPotlukksByPID(){
+        console.log(pid)
+        const response = await fetch(`${baseurl}potlucks/${potlucks.pid}`);
+        const body = await response.json();
+        setPotlucks(body);
+        console.log(body)
+    }
+
     return (
         <>
             <div className="searchItems">
-                <label htmlFor="creatorid">By Creator</label>
-                <input type="text" name="creatorid" />
-                <label htmlFor="potluckid">By Potluck</label>
-                <input type="text" name="potluckid" />
+                <input type="text" onInput={savedPId}/>
+                <button onClick={getPotlukksByPID}> Search By Potluck ID </button>
+                <p></p>
+                <input type="text" onInput={savedCreatorId}/>
+                <button onClick={getPotlukksByCreator}> Search By Creator </button>
+                <p></p>
+
             </div>
         </>
     );
