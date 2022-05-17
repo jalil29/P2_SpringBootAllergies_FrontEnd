@@ -3,7 +3,7 @@ import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
 import PotlukkItem from "../potlukkItem/potlukk-item";
 
 export default function Results(props) {
-    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [newPotluckDate, setNewPotluckDate] = useState({});
     const [dateValue, setDateValue] = useState("");
