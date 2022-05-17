@@ -84,10 +84,10 @@ export default function Banner(props = {}) {
     return (
         <>
             <div className="image">
-                banner
-            </div>
-            <div>
+                <h1>Header</h1>
+            <div className="image">
                 {displayLogin()}
+            </div>
             </div>
         </>
     );
