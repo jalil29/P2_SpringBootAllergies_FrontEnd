@@ -1,9 +1,4 @@
-import { useEffect } from "react";
-
-
 import './allPotlukks.css';
-
-
 
 export default function AllPotlukks(props) {
 
@@ -11,12 +6,10 @@ export default function AllPotlukks(props) {
     const selectPotluck = props.onSelectPotluck;
 
     function setCurrentPotluck(potluck) {
-        console.log("Potluck:");
-        console.log(potluck);
         selectPotluck(potluck);
     }
 
-    const potluckRows = potlucks.map(p => <span onClick={() => setCurrentPotluck(p)} key={p.pid} className="potluckSelectors clickable">{p.pid} {new Date(p.time).toDateString()}</span>);
+    const potluckRows = potlucks.map(p => <span onClick={() => setCurrentPotluck(p)} key={p.pid} className="potluckSelectors clickable">{p.pid} {new Date(p.time).toISOString().split("T")[0]}</span>);
 
     return (
         <>
