@@ -3,9 +3,11 @@ table{
     margin-right: auto;
     color:#3D4C53;
     width:85%;
+    border: 1px solid #26A69A;
+    border-collapse: collapse;
 }
 
-  table,th,td{
+  th,td{
     position: sticky;
     top:0;
       margin-left:0%;
