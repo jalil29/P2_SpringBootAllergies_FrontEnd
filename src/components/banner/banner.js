@@ -70,7 +70,7 @@ export default function Banner(props = {}) {
 
     function displayLogin() {
         if (user && user.username) {
-            return <div className="login">Welcome, {user.username}!<div className="clickable" onClick={onSignOut}>Sign out</div></div>;
+            return <div className="login"><div className="welcome">Welcome, {user.username}!</div><div className="clickable" onClick={onSignOut}>Sign out</div></div>;
         }
 
         return <>
