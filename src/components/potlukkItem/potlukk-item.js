@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 export default function PotlukkItem(props) {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [guestName, setGuestName] = useState("");
     const item = props.item;

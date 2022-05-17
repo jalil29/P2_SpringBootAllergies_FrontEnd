@@ -3,10 +3,12 @@ import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
 import PotlukkItem from "../potlukkItem/potlukk-item";
 
 export default function Results(props) {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [newPotluckDate, setNewPotluckDate] = useState({});
+    const [updatedPotluckDate, setUpdatedPotluckDate] = useState({});
     const [dateValue, setDateValue] = useState("");
+    const [updatedDateValue, setUpdatedDateValue] = useState("");
 
     const potluckItems = props.potluckItems || [];
     const currentUser = props.currUser || [];
@@ -52,6 +54,36 @@ export default function Results(props) {
         setNewPotluckDate(new Date(event.target.value));
     }
 
+    function saveUpdatedPotluckTime(event) {
+        setUpdatedDateValue(event.target.value);
+        setUpdatedPotluckDate(new Date(event.target.value));
+    }
+
+    async function changePotluckTime() {
+        if (!updatedPotluckDate || !updatedPotluckDate.getTime) {
+            alert('Need to provide a date to update a potluck');
+            return;
+        }
+        const updatedPotluck = { ...potluck };
+        console.log(updatedPotluckDate);
+        updatedPotluck.time = updatedPotluckDate.getTime();
+        const response = await fetch(`${baseURL}potlucks`, {
+            method: "POST",
+            body: JSON.stringify(updatedPotluck),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+
+        const result = await response.json();
+        console.log(result);
+        if (result && result.pid) {
+            setCurrPotluck(result);
+            setUpdatedPotluckDate("");
+            setUpdatedDateValue("");
+        }
+    }
+
     async function deletePotluck() {
         const response = await fetch(`${baseURL}potlucks/${potluck.pid}`, {
             method: "DELETE"
@@ -75,7 +107,14 @@ export default function Results(props) {
                     <tbody>
                         <tr key={potluck.pid}>
                             <td>{potluck.pid}</td>
-                            <td>{(new Date(potluck.time)).toISOString().split("T")[0]}</td>
+                            <td>{
+                                isOwner() ?
+                                    <>
+                                        <input name="potluckDate" type="date" onInput={saveUpdatedPotluckTime} min={new Date().toISOString().split("T")[0]} value={updatedDateValue} />
+                                        <label className="clickable" htmlFor="potluckDate" onClick={changePotluckTime}>Change Potluck Time</label>
+                                    </>
+                                    : (new Date(potluck.time)).toISOString().split("T")[0]
+                            }</td>
                             <td>{potluck.creatorid}</td>
                         </tr>
                     </tbody>
