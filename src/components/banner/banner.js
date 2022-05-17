@@ -3,7 +3,7 @@ import { useState } from "react";
 import './banner.css';
 
 export default function Banner(props = {}) {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
