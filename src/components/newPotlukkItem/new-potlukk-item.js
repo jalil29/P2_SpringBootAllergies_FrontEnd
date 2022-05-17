@@ -2,7 +2,7 @@ import { useState } from "react";
 
 
 export default function NewPotlukkItem(props) {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [itemDescription, setItemDescription] = useState("");
     const [guestName, setGuestName] = useState("");
@@ -22,6 +22,10 @@ export default function NewPotlukkItem(props) {
     }
 
     async function onAddNewItem() {
+        if (!itemDescription || (!guestName && !currUser.username)) {
+            alert("You need to enter a description or guest name to add an item");
+            return;
+        }
         const newItem = { "status": "", "description": itemDescription, "pid": currPotluck.pid, "supplier": null };
         if (!currUser.userid && !guestName && !isOwner()) {
             alert('Need to be signed in or provide a guest name to add item.');

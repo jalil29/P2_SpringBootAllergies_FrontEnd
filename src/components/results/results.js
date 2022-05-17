@@ -3,27 +3,30 @@ import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
 import PotlukkItem from "../potlukkItem/potlukk-item";
 
 export default function Results(props) {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [newPotluckDate, setNewPotluckDate] = useState({});
+    const [dateValue, setDateValue] = useState("");
 
     const potluckItems = props.potluckItems || [];
-    const currUser = props.currUser || [];
+    const currentUser = props.currUser || [];
     const potluck = props.currPotluck || [];
     const setCurrPotluck = props.onSetPotluck;
     const refreshPotluckItems = props.onItemsUpdate;
+    const refreshPotluckList = props.onPotlucksRefresh;
 
     function isOwner() {
-        return currUser.userid === potluck.creatorid;
+        return currentUser.userid === potluck.creatorid;
     }
 
     async function createPotluck() {
-        if (!newPotluckDate) {
+        console.log(newPotluckDate.getTime);
+        if (!newPotluckDate || !newPotluckDate.getTime) {
             alert('Need to provide a date to create a potluck');
             return;
         }
 
-        const newPotluck = { "time": newPotluckDate.getTime(), "creatorid": currUser.userid };
+        const newPotluck = { "time": newPotluckDate.getTime(), "creatorid": currentUser.userid };
         const response = await fetch(`${baseURL}potlucks`, {
             method: "POST",
             body: JSON.stringify(newPotluck),
@@ -39,11 +42,13 @@ export default function Results(props) {
             console.log(result);
             setNewPotluckDate("");
             refreshPotluckItems(result);
+            setDateValue("");
         }
     }
 
     function savePotluckTime(event) {
         console.log(event.target.value);
+        setDateValue(event.target.value);
         setNewPotluckDate(new Date(event.target.value));
     }
 
@@ -55,6 +60,7 @@ export default function Results(props) {
         const status = await response.status;
         if (status === 204) {
             console.log(status);
+            refreshPotluckList();
         }
     }
 
@@ -69,7 +75,7 @@ export default function Results(props) {
                     <tbody>
                         <tr key={potluck.pid}>
                             <td>{potluck.pid}</td>
-                            <td>{(new Date(potluck.time)).toDateString()}</td>
+                            <td>{(new Date(potluck.time)).toISOString().split("T")[0]}</td>
                             <td>{potluck.creatorid}</td>
                         </tr>
                     </tbody>
@@ -85,9 +91,9 @@ export default function Results(props) {
                     </thead>
                     <tbody>
                         {
-                            potluckItems.map(i => <PotlukkItem key={i.itemId} currPotluck={potluck} item={i} isOwner={isOwner} onRefreshItems={refreshPotluckItems} />)
+                            potluckItems.map(i => <PotlukkItem key={i.itemId} currUser={currentUser} currPotluck={potluck} item={i} isOwner={isOwner} onRefreshItems={refreshPotluckItems} />)
                         }
-                        <NewPotlukkItem isOwner={isOwner} currUser={currUser} currPotluck={potluck} refreshPotluckItems={refreshPotluckItems} />
+                        <NewPotlukkItem isOwner={isOwner} currUser={currentUser} currPotluck={potluck} refreshPotluckItems={refreshPotluckItems} />
                     </tbody>
                 </table>
             </>
@@ -97,8 +103,8 @@ export default function Results(props) {
     return (
         <>
             <span>
-                {currUser.userid && <>
-                    <input name="potluckDate" type='date' onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} />
+                {currentUser.userid && <>
+                    <input name="potluckDate" type="date" onInput={savePotluckTime} min={new Date().toISOString().split("T")[0]} value={dateValue} />
                     <label className="clickable" htmlFor="potluckDate" onClick={createPotluck}>Create Potluck</label>
                 </>}
                 {isOwner() && <><span className="clickable" onClick={deletePotluck}>Delete Potluck</span></>}

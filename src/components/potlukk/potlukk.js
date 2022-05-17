@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 
 
 export default function Potlukk() {
-    const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseURL = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const [potlucks, setPotlucks] = useState([]);
     const [currPotluck, setCurrentPotluck] = useState({});
@@ -15,6 +15,7 @@ export default function Potlukk() {
     const [currUser, setCurrUser] = useState({});
 
     async function getAllPotlucks() {
+        console.log(`${baseURL}potlucks`);
         const response = await fetch(`${baseURL}potlucks`);
         const body = await response.json();
         setPotlucks(body);
@@ -52,12 +53,10 @@ export default function Potlukk() {
     useEffect(() => {
         getAllPotlucks();
         console.log('finding current user');
-        const currentUser = localStorage.getItem("user") || {};
-        console.log(currentUser);
+        const currentUser = JSON.parse(localStorage.getItem("user"));
         if (currentUser && currentUser.username) {
             setCurrUser(currentUser);
         } else {
-            console.log('current user was null?');
             setCurrUser({});
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -78,7 +77,7 @@ export default function Potlukk() {
                     <AllPotlukks onSelectPotluck={onSelectPotluck} potluckList={potlucks} />
                 </div>
                 <div className="results">
-                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onSetPotluck={onCreatePotluck} onItemsUpdate={getAllPItems} />
+                    <Results currPotluck={currPotluck} currUser={currUser} potluckItems={potluckItems} onPotlucksRefresh={getAllPotlucks} onSetPotluck={onCreatePotluck} onItemsUpdate={getAllPItems} />
                 </div>
             </div>
         </>
