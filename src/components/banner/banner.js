@@ -75,10 +75,12 @@ export default function Banner(props = {}) {
 
         return <>
             <div className="login">
-                <label htmlFor="username" className="label">Username</label>
-                <input type="text" name="username" onInput={onUsernameChange} />
-                <label htmlFor="password" className="label">Password</label>
-                <input type="password" name="password" onInput={onPasswordChange} />
+
+                <label htmlFor="username">Username</label>
+                <input type="text" name="username"  minLength={8} maxLength={50} pattern="^[a-zA-Z0-9_-]*$" onInput={onUsernameChange} />
+                <label htmlFor="password">Password</label>
+                <input type="password" name="password"  minLength={8}  maxLength={50} pattern="^[a-zA-Z0-9_-]*$" onInput={onPasswordChange} />
+
 
                 <div className="clickable" onClick={attemptLogin}>Login</div>
                 <div className="label"> or </div>
@@ -90,11 +92,12 @@ export default function Banner(props = {}) {
     return (
         <>
             <div className="image">
-                <h1 className="label">POTLUKK <sub>by Spring Allergies</sub></h1>
 
-                <div>
-                    {displayLogin()}
-                </div>
+                <h1>Spring Allergies Potlukk</h1>
+            <div className="image">
+                {displayLogin()}
+
+            </div>
             </div>
         </>
     );

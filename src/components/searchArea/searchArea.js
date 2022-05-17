@@ -1,3 +1,4 @@
+import './searchArea.css';
 import { useState } from "react";
 
 export default function SearchArea(props = {}) {
@@ -33,7 +34,7 @@ export default function SearchArea(props = {}) {
     }
 
     return (
-        <>
+        <><div className="searchArea">
             <div className="searchItems">
                 <input type="text" onInput={savedPId} />
                 <button onClick={getPotlukksByPID}> Search By Potluck ID </button>
@@ -42,6 +43,7 @@ export default function SearchArea(props = {}) {
                 <button onClick={getPotlukksByCreator}> Search By Creator </button>
                 <p></p>
 
+            </div>
             </div>
         </>
     );

@@ -1,4 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Chango&display=swap');
+
 .banner {
+    font-family: 'Chango', cursive;
+    color: rgb(230, 222, 67); 
+    text-shadow: black 0.1em 0.1em 0.2em;
     background-color: #34d034aa;
     height: auto;
     background-image: url("https://freesvg.org/img/1514679799.png");
@@ -10,10 +15,12 @@
 }
 
 .banner .image {
+    
     flex-grow: 2;
 }
 
 .login {
+  
     margin: .8em;
     flex-grow: 1;
     display: flex;
@@ -40,3 +47,11 @@
     padding-right: 1.3em;
     display: inline-block;
 }
+
+
+.image{
+
+    background-image: url(https://i.ebayimg.com/images/g/PUEAAOSwISJe47lE/s-l400.jpg);
+}
+
+
