@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 export default function SearchArea(props = {}) {
-    const baseurl = "http://localhost:5000/";//"http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
+    const baseurl = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";
 
     const setPotluck = props.setPotluck;
     const [creatorid, setCreatorID] = useState("");
