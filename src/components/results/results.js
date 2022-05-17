@@ -1,6 +1,7 @@
 import { useState } from "react";
 import NewPotlukkItem from "../newPotlukkItem/new-potlukk-item";
 import PotlukkItem from "../potlukkItem/potlukk-item";
+import './results.css'
 
 export default function Results(props) {
     const baseURL = "http://p2springallergies.eba-qpc77jse.us-east-2.elasticbeanstalk.com/";

@@ -16,3 +16,8 @@ table{
     text-align: center;
       background-color: white;
   }
+
+  .results{
+      text-align: center;
+      background-image: url(https://i.ebayimg.com/images/g/PUEAAOSwISJe47lE/s-l400.jpg);
+  }

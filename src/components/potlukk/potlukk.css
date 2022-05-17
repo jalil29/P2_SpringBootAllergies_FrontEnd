@@ -38,11 +38,10 @@
 
 .allPotlukks {
     grid-area: allPotlukks;
-    background-color: rgba(255, 255, 255, 0.801);
 }
 
 .results {
-    text-align: center;
+    
     grid-area: results;
-    background-color: rgba(255, 255, 255, 0.801);
+    
 }
