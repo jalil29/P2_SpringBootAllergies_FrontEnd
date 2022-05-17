@@ -30,7 +30,11 @@
 .label {
     background-color: rgba(255, 255, 255, 0.521);
     /* doesn't seem to work?*/
-    text-shadow: 1 1 1 rgb(255, 0, 0);
+    text-shadow: 1px 1px 1px rgb(255, 0, 0);
+}
+
+.welcome {
+    background-color: hsla(0,0%,100%,.721);
 }
 
 .clickable {
@@ -44,6 +48,7 @@
     display: inline-block;
 }
 
+
 .image{
 
     background-image: url(https://i.ebayimg.com/images/g/PUEAAOSwISJe47lE/s-l400.jpg);
@@ -52,4 +57,4 @@
 .container{
 
     background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRujKpGtMOQDpEmmndHiqLgA9N4V8lJ10JiBA&usqp=CAU);
-}
+
